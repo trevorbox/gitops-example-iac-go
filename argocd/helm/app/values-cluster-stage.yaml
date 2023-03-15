@@ -1,5 +1,0 @@
-apps:
-  - env: qa
-    addFinalizer: true
-  - env: perf
-    addFinalizer: true

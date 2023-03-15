@@ -1,29 +1,25 @@
-{{- range .Values.apps }}
----
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: {{ $.Values.org }}-{{ $.Values.context }}-{{ .env }}
-  {{- if .addFinalizer }}
+  name: {{ .Values.org }}-{{ .Values.context }}-{{ .Values.env }}
+  {{- if .Values.addFinalizer }}
   finalizers:
     - resources-finalizer.argocd.argoproj.io
   {{- end }}
 spec:
   destination:
     name: ''
-    namespace: {{ $.Values.org }}-{{ $.Values.context }}-{{ .env }}
+    namespace: {{ .Values.org }}-{{ .Values.context }}-{{ .Values.env }}
     server: 'https://kubernetes.default.svc'
   source:
-    path: {{ (.source).path | default $.Values.defaults.source.path | quote }}
-    repoURL: {{ (.source).repoURL | default $.Values.defaults.source.repoURL | quote }}
-    targetRevision: {{ (.source).targetRevision | default $.Values.defaults.source.targetRevision | quote }}
+    path: {{ .Values.path | quote }}
+    repoURL: {{ .Values.repoURL | quote }}
+    targetRevision: {{ .Values.targetRevision | quote }}
     helm:
       valueFiles:
-        - values-{{ .env }}.yaml
+        - values-{{ .Values.env }}.yaml
   project: default
   syncPolicy:
     automated: 
       prune: true
       selfHeal: true
-...
-{{- end }}

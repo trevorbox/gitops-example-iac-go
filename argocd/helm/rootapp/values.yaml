@@ -1,9 +1,0 @@
-# Namespace naming convetion <org>-<context>-<env>
-org: myorg
-context: go-app
-
-addFinalizer: true
-source:
-  targetRevision: main
-  path: argocd/helm/app
-  repoURL: 'https://github.com/trevorbox/gitops-example-iac-go.git'
