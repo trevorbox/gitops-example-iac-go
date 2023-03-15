@@ -1,3 +1,0 @@
-clusterName: cluster-prod
-source:
-  targetRevision: prod

@@ -1,5 +1,0 @@
-apps:
-  - env: dev
-    addFinalizer: true
-  - env: build
-    addFinalizer: true

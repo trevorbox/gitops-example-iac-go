@@ -1,4 +1,0 @@
-apps:
-  - env: prod
-    source: 
-      targetRevision: prod
