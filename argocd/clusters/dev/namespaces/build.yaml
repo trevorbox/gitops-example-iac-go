@@ -1,5 +1,5 @@
 env: build
-targetRevision: main
+targetRevision: build
 server: https://kubernetes.default.svc
 org: myorg
 context: go-app

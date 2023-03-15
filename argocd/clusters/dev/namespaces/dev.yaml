@@ -1,5 +1,5 @@
 env: dev
-targetRevision: 'main' # feature/feature1
+targetRevision: dev
 server: https://kubernetes.default.svc
 org: myorg
 context: go-app

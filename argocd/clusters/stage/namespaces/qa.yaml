@@ -1,5 +1,5 @@
 env: qa
-targetRevision: main
+targetRevision: qa
 server: https://kubernetes.default.svc
 org: myorg
 context: go-app

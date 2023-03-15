@@ -1,5 +1,5 @@
 env: perf
-targetRevision: main
+targetRevision: perf
 server: https://kubernetes.default.svc
 org: myorg
 context: go-app
