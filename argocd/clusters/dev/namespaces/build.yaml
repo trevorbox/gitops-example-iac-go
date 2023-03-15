@@ -1,3 +1,4 @@
 env: build
 targetRevision: main
 addFinalizer: true
+server: https://kubernetes.default.svc

@@ -1,3 +1,4 @@
 env: perf
 targetRevision: main
 addFinalizer: true
+server: https://kubernetes.default.svc

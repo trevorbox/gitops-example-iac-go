@@ -1,4 +1,2 @@
 env: prod
-path: deploy/helm/app
-repoURL: 'https://github.com/trevorbox/gitops-example-iac-go.git'
 targetRevision: prod
