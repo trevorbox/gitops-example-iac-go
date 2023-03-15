@@ -13,6 +13,8 @@ spec:
     metadata:
       name: >-
         {{ printf "hr-echo-{{env}}" }}
+      finalizers:
+        - resources-finalizer.argocd.argoproj.io
     spec:
       project: default
       source:

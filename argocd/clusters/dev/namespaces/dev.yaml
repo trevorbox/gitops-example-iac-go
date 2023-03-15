@@ -1,3 +1,6 @@
 env: dev
 targetRevision: 'main' # feature/feature1
 server: https://kubernetes.default.svc
+org: myorg
+context: go-app
+addFinalizer: true
