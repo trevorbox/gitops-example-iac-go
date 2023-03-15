@@ -1,5 +1,5 @@
 env: dev
-targetRevision: dev
+targetRevision: feature/more-replicas
 server: https://kubernetes.default.svc
 org: myorg
 context: go-app
