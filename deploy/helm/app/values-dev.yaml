@@ -3,3 +3,4 @@ image:
   # Overrides the image tag whose default is the chart appVersion.
   tag: "v0.1.0-20"
 useArgoRollout: true
+replicaCount: 7
