@@ -3,6 +3,8 @@ kind: ApplicationSet
 metadata:
   name: hr-echo-{{ .Values.cluster.name }}
 spec:
+  syncPolicy:
+    preserveResourcesOnDeletion: {{ printf "{{preserveResourcesOnDeletion}}" | quote }}
   generators:
     - git:
         repoURL: 'https://github.com/trevorbox/gitops-example-iac-go.git'
@@ -31,4 +33,3 @@ spec:
         automated: 
           prune: true
           selfHeal: true
-        preserveResourcesOnDeletion: {{ printf "{{preserveResourcesOnDeletion}}" | quote }}
