@@ -13,8 +13,6 @@ spec:
     metadata:
       name: >-
         {{ printf "hr-echo-{{env}}" }}
-      # finalizers:
-      #   - resources-finalizer.argocd.argoproj.io
     spec:
       project: default
       source:
@@ -33,3 +31,4 @@ spec:
         automated: 
           prune: true
           selfHeal: true
+        preserveResourcesOnDeletion: {{ printf "{{preserveResourcesOnDeletion}}" }}
