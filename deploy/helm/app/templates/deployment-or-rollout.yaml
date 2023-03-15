@@ -19,8 +19,8 @@ spec:
       # cutover. +optional
       prePromotionAnalysis:
         templates:
-        # - templateName: smoke-test
-        - templateName: always-fail
+        - templateName: smoke-test
+        # - templateName: always-fail
         args:
         - name: service-name
           value: {{ template "app.fullname" . }}-preview.{{ .Release.Namespace }}.svc.cluster.local
