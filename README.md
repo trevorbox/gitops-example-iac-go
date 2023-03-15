@@ -56,7 +56,7 @@ helm upgrade -i cicd setup/helm/argocd/ -n ${argo_namespace} --create-namespace
 
 ## deploy applicationset
 
-Deploy either the cluster dev, stage, or prod applicationset. This demonstrates deploying the same applicationset for different clusters (although we are demonstrating with only one) with different namespaces (environments) for each context.
+Deploy either the cluster dev, stage, or prod applicationset. This demonstrates deploying multiple applications to many namespaces in a single cluster. The example could be modified if using an external GitOps hub to sync applications across many different clusters with different namespaces (environments) for each context.
 
 ```sh
 # dev cluster
@@ -108,7 +108,6 @@ We can then modify the Application parameters to sync with the desired branch by
 [tbox@fedora gitops-example-iac-go]$ cat argocd/clusters/dev/namespaces/dev.yaml 
 env: dev
 targetRevision: 'feature/feature1' # change this back to main when the feature branch is merged back to main on the main branch
-addFinalizer: true
 ```
 
 After the push, you must wait for the ApplicationSet to reconcile (3 minutes) or use a [Git Webhook](https://argocd-applicationset.readthedocs.io/en/stable/Generators-Git/#webhook-configuration) to force the sync if using a supported Git provider (see docs for how to configure GitHub webhook).
@@ -123,30 +122,6 @@ Webhook route creation and secret creation notes...
 oc create route edge argocd-applicationset-controller --service=argocd-applicationset-controller --port=webhook -n ${argo_namespace}
 oc patch secret argocd-secret -p "{\"stringData\":{\"webhook.github.secret\": \"${mywebhooksecret}\"}}" -n ${argo_namespace}
 oc rollout restart deploy argocd-applicationset-controller -n ${argo_namespace}
-```
-
-## (optional) deploy rootapp
-
-The rootapp can be used instead of the ApplicationSet if desired. A benfit with this approach is quickly forcing a sync from the rootapp instead of having to wait for the ApplicationSet to reconcile.
-
-![ArgoCD Root Application](.pics/argocd-rootapp.png)
-
-```sh
-# dev cluster rootapp
-helm upgrade -i rootapp argocd/helm/rootapp/ -n ${argo_namespace} \
-  --set org=${org} \
-  --set context=${context} \
-  -f argocd/helm/rootapp/values-cluster-dev.yaml
-# stage cluster rootapp
-helm upgrade -i rootapp argocd/helm/rootapp/ -n ${argo_namespace} \
-  --set org=${org} \
-  --set context=${context} \
-  -f argocd/helm/rootapp/values-cluster-stage.yaml
-# prod cluster rootapp
-helm upgrade -i rootapp argocd/helm/rootapp/ -n ${argo_namespace} \
-  --set org=${org} \
-  --set context=${context} \
-  -f argocd/helm/rootapp/values-cluster-prod.yaml
 ```
 
 ## deploy build pipeline
