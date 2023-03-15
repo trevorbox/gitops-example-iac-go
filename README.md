@@ -56,6 +56,8 @@ helm upgrade -i cicd setup/helm/argocd/ -n ${argo_namespace} --create-namespace
 
 ## deploy applicationset
 
+Deploy an ApplicationSet following the [self-service](https://argo-cd.readthedocs.io/en/stable/operator-manual/applicationset/Use-Cases/#use-case-self-service-of-argo-cd-applications-on-multitenant-clusters) use case for running applications on multitenant clusters.
+
 Deploy either the cluster dev, stage, or prod applicationset. This demonstrates deploying multiple applications to many namespaces in a single cluster, from a gitops instance within the same cluster. The example could be modified if using an external GitOps hub to sync applications across many different clusters and namespaces.
 
 ```sh
