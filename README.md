@@ -56,7 +56,7 @@ helm upgrade -i cicd setup/helm/argocd/ -n ${argo_namespace} --create-namespace
 
 ## deploy applicationset
 
-Deploy either the cluster dev, stage, or prod applicationset. This demonstrates deploying multiple applications to many namespaces in a single cluster. The example could be modified if using an external GitOps hub to sync applications across many different clusters with different namespaces (environments) for each context.
+Deploy either the cluster dev, stage, or prod applicationset. This demonstrates deploying multiple applications to many namespaces in a single cluster, from a gitops instance within the same cluster. The example could be modified if using an external GitOps hub to sync applications across many different clusters and namespaces.
 
 ```sh
 # dev cluster
@@ -80,8 +80,6 @@ helm upgrade -i applicationset-hr-echo argocd/helm/applicationset/ -n ${argo_nam
   -f argocd/helm/applicationset/values-cluster-prod.yaml
 ```
 
-In a real-world scenario, development may require branching from the `main` branch but also updating an ApplicationSet cluster/namespace config file in the `main` branch to point to a feature branch.
-
 By using the [Git Generator](https://argocd-applicationset.readthedocs.io/en/stable/Generators-Git/) type to generate Applications from the ApplicationSet, we can simply modify configuration files in our IAC repo to change the parameters passed to Applications.
 
 The folder structure for these parameters files corresponds to a cluster with one or more namespaces.
@@ -102,13 +100,17 @@ argocd/clusters/
         └── qa.yaml
 ```
 
-We can then modify the Application parameters to sync with the desired branch by changing the yaml file in the `main` branch.
+We can then modify the Application parameters to sync with the desired branch by changing the yaml file.
 
 ```sh
 [tbox@fedora gitops-example-iac-go]$ cat argocd/clusters/dev/namespaces/dev.yaml 
 env: dev
 targetRevision: 'feature/feature1' # change this back to main when the feature branch is merged back to main on the main branch
 ```
+
+In a real-world scenario, development on deployment code may involve feature branching from the `main` branch, changing the ApplicationSet's targetRevision parameter in an env config file and then merging the feature branch with `main` and the SLDC branch that an ApplicationSet is referencing (use `main` as an integration branch). Additioanlly, a good practice may be to have pull request requirements in place to only allow changes from the `main` branch into SDLC branches (such as `dev`,`qa`, and `prod` for example) to reduce configuration drift.
+
+![IAC branching](.pics/iac-branching-model.jpg)
 
 After the push, you must wait for the ApplicationSet to reconcile (3 minutes) or use a [Git Webhook](https://argocd-applicationset.readthedocs.io/en/stable/Generators-Git/#webhook-configuration) to force the sync if using a supported Git provider (see docs for how to configure GitHub webhook).
 
@@ -191,7 +193,7 @@ helm delete deploy-pipelinerun-imagechange-go-app -n ${build_namespace}
 helm delete build-and-deploy-go-app-pipeline -n ${build_namespace}
 oc delete -f pipelines/pipelinerun-build-deploy-go-app.yaml -n ${build_namespace}
 
-helm delete rootapp -n ${argo_namespace}
+helm delete applicationset-hr-echo -n ${argo_namespace}
 for i in "${envs[@]}"; do ns=${org}-${context}-${i} && oc delete project ${ns}; done
 ```
 
