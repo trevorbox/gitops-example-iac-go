@@ -1,7 +1,7 @@
 apiVersion: argoproj.io/v1alpha1
 kind: ApplicationSet
 metadata:
-  name: hr-echo
+  name: hr-echo-{{ .Values.cluster.name }}
 spec:
   generators:
     - git:
@@ -27,7 +27,7 @@ spec:
             - name: addFinalizer
               value: {{ printf "{{addFinalizer}}" | quote }}
       destination:
-        server: {{ printf "{{server}}" }}
+        server: {{ printf "{{server}}"  | quote }}
         namespace: >-
           {{ printf "hr-echo-{{env}}" }}
       syncPolicy:
