@@ -4,3 +4,4 @@ context: go-app
 path: deploy/helm/app
 repoURL: 'https://github.com/trevorbox/gitops-example-iac-go.git'
 targetRevision: main
+addFinalizer: true

@@ -23,9 +23,6 @@ spec:
         helm:
           valueFiles:
             - {{ printf "values-{{env}}.yaml" }}
-          parameters:
-            - name: addFinalizer
-              value: {{ printf "{{addFinalizer}}" | quote }}
       destination:
         server: {{ printf "{{server}}"  | quote }}
         namespace: >-

@@ -1,4 +1,3 @@
 env: dev
 targetRevision: 'feature/feature1' # main
-addFinalizer: true
 server: https://kubernetes.default.svc
