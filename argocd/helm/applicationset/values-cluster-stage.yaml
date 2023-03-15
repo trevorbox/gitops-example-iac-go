@@ -1,2 +1,4 @@
 cluster:
   name: stage
+# the git branch for the ApplicationSet to sync from
+revision: main

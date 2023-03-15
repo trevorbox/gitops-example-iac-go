@@ -1,2 +1,4 @@
 cluster:
   name: dev
+# the git branch for the ApplicationSet to sync from
+revision: main

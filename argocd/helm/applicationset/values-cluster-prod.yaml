@@ -1,2 +1,4 @@
 cluster:
   name: prod
+# the git branch for the ApplicationSet to sync from
+revision: prod
