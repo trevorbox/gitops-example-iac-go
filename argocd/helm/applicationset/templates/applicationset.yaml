@@ -4,7 +4,7 @@ metadata:
   name: hr-echo-{{ .Values.cluster.name }}
 spec:
   syncPolicy:
-    preserveResourcesOnDeletion: {{ printf "{{preserveResourcesOnDeletion}}" | quote }}
+    preserveResourcesOnDeletion: {{ .Values.preserveResourcesOnDeletion }}
   generators:
     - git:
         repoURL: 'https://github.com/trevorbox/gitops-example-iac-go.git'

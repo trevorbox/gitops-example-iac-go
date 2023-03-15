@@ -2,3 +2,5 @@ cluster:
   name: dev
 # the git branch for the ApplicationSet to sync from
 revision: main
+# the finalizer causes all apps and resources created by apps to be deleted
+preserveResourcesOnDeletion: false
