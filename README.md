@@ -105,7 +105,7 @@ We can then modify the Application parameters to sync with the desired branch by
 ```sh
 [tbox@fedora gitops-example-iac-go]$ cat argocd/clusters/dev/namespaces/dev.yaml 
 env: dev
-targetRevision: 'feature/feature1' # change this back to main when the feature branch is merged back to main on the main branch
+targetRevision: 'feature/feature1'
 ```
 
 In a real-world scenario, development on deployment code may involve feature branching from the `main` branch, changing the ApplicationSet's targetRevision parameter in an env config file and then merging the feature branch with `main` and the SLDC branch that an ApplicationSet is referencing (use `main` as an integration branch). Additioanlly, a good practice may be to have pull request requirements in place to only allow changes from the `main` branch into SDLC branches (such as `dev`,`qa`, and `prod` for example) to reduce configuration drift.
