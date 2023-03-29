@@ -284,3 +284,25 @@ NAME                                                           KIND         STAT
 The sync step in the pipeline also fails due to degraded Rollout...
 
 ![ArgoCD Rollout AnalysisRun Always Fail](.pics/argo-rollouts-analysisrun-always-fail-pipeline.png)
+
+## release helm chart
+
+> helm can release to OCI registries <https://helm.sh/docs/topics/registries/>
+
+```sh
+helm package deploy/helm/app/
+helm registry login quay.io
+helm push app-0.1.0.tgz oci://quay.io/trevorbox/helm-charts
+helm show all oci://quay.io/trevorbox/helm-charts/app
+```
+
+Specify dependency <https://helm.sh/docs/topics/registries/#specifying-dependencies>
+
+The repository for a given entry in Chart.yaml is specified as the registry reference without the basename:
+
+```yaml
+dependencies:
+  - name: app
+    version: "0.1.0"
+    repository: "oci://quay.io/trevorbox/helm-charts"
+```
