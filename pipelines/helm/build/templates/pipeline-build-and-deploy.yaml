@@ -93,6 +93,8 @@ spec:
     taskRef:
       name: buildah
       kind: ClusterTask
+      # name: buildah-as-user      
+      # kind: Task
     params:
     - name: IMAGE
       value: "$(params.IMAGE):v$(tasks.image-util.results.next-prerelease)"
