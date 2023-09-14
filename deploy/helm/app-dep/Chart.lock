@@ -1,6 +1,0 @@
-dependencies:
-- name: app
-  repository: oci://quay.io/trevorbox/helm-charts-restricted
-  version: 0.1.0
-digest: sha256:a8203f4787432ed9c7a1a39566b54b76eda958e8dfe3baf22bb984005ced82c9
-generated: "2023-09-14T14:05:07.773983246-07:00"
