@@ -306,3 +306,20 @@ dependencies:
     version: "0.1.0"
     repository: "oci://quay.io/trevorbox/helm-charts"
 ```
+
+
+
+```sh
+helm package deploy/helm/app/
+helm registry login quay.io
+helm push app-0.1.0.tgz oci://quay.io/trevorbox/helm-charts-restricted
+helm show all oci://quay.io/trevorbox/helm-charts/app
+```
+
+```yaml
+dependencies:
+  - name: app
+    version: "0.1.0"
+    repository: "oci://quay.io/trevorbox/helm-charts-restricted"
+```
+
