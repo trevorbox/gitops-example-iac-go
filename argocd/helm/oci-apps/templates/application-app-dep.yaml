@@ -1,0 +1,20 @@
+﻿apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: app-dep
+  finalizers:
+    # The default behaviour is foreground cascading deletion
+    - resources-finalizer.argocd.argoproj.io
+spec:
+  destination:
+    namespace: app-dep
+    server: 'https://kubernetes.default.svc'
+  project: default
+  sources:
+    - chart: app
+      repoURL: quay.io/trevorbox/helm-charts-restricted
+      targetRevision: 0.1.0
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true

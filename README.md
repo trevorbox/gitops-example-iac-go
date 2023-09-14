@@ -307,13 +307,13 @@ dependencies:
     repository: "oci://quay.io/trevorbox/helm-charts"
 ```
 
-
+## restricted oci image testing
 
 ```sh
 helm package deploy/helm/app/
 helm registry login quay.io
 helm push app-0.1.0.tgz oci://quay.io/trevorbox/helm-charts-restricted
-helm show all oci://quay.io/trevorbox/helm-charts/app
+helm show all oci://quay.io/trevorbox/helm-charts-restricted/app
 ```
 
 ```yaml
@@ -323,3 +323,6 @@ dependencies:
     repository: "oci://quay.io/trevorbox/helm-charts-restricted"
 ```
 
+```sh
+helm upgrade -i oci-apps argocd/helm/oci-apps -n openshift-gitops --set username=${OCI_USERNAME} --set password=${OCI_PASSWORD}
+```

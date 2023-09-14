@@ -1,0 +1,23 @@
+﻿apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: example
+  finalizers:
+    # The default behaviour is foreground cascading deletion
+    - resources-finalizer.argocd.argoproj.io
+spec:
+  destination:
+    namespace: app-dep
+    server: 'https://kubernetes.default.svc'
+  project: default
+  source:
+    helm:
+      valueFiles:
+        - values.yaml
+    path: deploy/helm/app-dep
+    repoURL: 'https://github.com/trevorbox/gitops-example-iac-go.git'
+    targetRevision: test-argocd-helm-dep
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
