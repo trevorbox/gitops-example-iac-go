@@ -52,21 +52,27 @@ spec:
   tasks:
   - name: fetch-repository
     taskRef:
-      name: git-clone
-      kind: ClusterTask
+      resolver: cluster
+      params:
+      - name: kind
+        value: task
+      - name: name
+        value: git-clone
+      - name: namespace
+        value: openshift-pipelines
     workspaces:
     - name: output
       workspace: shared-workspace
     - name: ssh-directory
       workspace: ssh-creds
     params:
-    - name: url
+    - name: URL
       value: $(params.git-url)
-    - name: subdirectory
+    - name: SUBDIRECTORY
       value: ""
-    - name: deleteExisting
+    - name: DELETE_EXISTING
       value: "true"
-    - name: revision
+    - name: REVISION
       value: $(params.git-revision)
   - name: image-util
     workspaces:
@@ -91,8 +97,14 @@ spec:
     - fetch-repository
   - name: build-image
     taskRef:
-      name: buildah
-      kind: ClusterTask
+      resolver: cluster
+      params:
+      - name: kind
+        value: task
+      - name: name
+        value: buildah
+      - name: namespace
+        value: openshift-pipelines
     params:
     - name: IMAGE
       value: "$(params.IMAGE):v$(tasks.image-util.results.next-prerelease)"
@@ -103,7 +115,7 @@ spec:
     - name: BUILD_EXTRA_ARGS
       value: >-
         --build-arg git_origin_url="$(params.git-url)"
-        --build-arg git_revision="$(tasks.fetch-repository.results.commit)"
+        --build-arg git_revision="$(tasks.fetch-repository.results.COMMIT)"
         --build-arg builder_image_repository="$(params.builder-image-repository)"
         --build-arg builder_image_tag="$(params.builder-image-tag)"
         --build-arg builder_image_digest="$(tasks.image-util.results.builder-image-digest)"
@@ -122,39 +134,51 @@ spec:
     - image-util
   - name: push-image
     taskRef:
-      name: skopeo-copy
-      kind: ClusterTask
+      resolver: cluster
+      params:
+      - name: kind
+        value: task
+      - name: name
+        value: skopeo-copy
+      - name: namespace
+        value: openshift-pipelines
     params:
-    - name: srcImageURL
+    - name: SOURCE_IMAGE_URL
       value: "docker://$(params.IMAGE):v$(tasks.image-util.results.next-prerelease)"
-    - name: destImageURL
+    - name: DESTINATION_IMAGE_URL
       value: "docker://$(params.IMAGE):latest"
-    - name: srcTLSverify
+    - name: SRC_TLS_VERIFY
       value: "false"
-    - name: destTLSverify
+    - name: DEST_TLS_VERIFY
       value: "false"
     workspaces:
-    - name: images-url
+    - name: images_url
       workspace: shared-workspace
     runAfter:
     - build-image
   - name: fetch-iac
     taskRef:
-      name: git-clone
-      kind: ClusterTask
+      resolver: cluster
+      params:
+      - name: kind
+        value: task
+      - name: name
+        value: git-clone
+      - name: namespace
+        value: openshift-pipelines
     workspaces:
     - name: output
       workspace: iac-workspace
     - name: ssh-directory
       workspace: ssh-creds
     params:
-      - name: url
+      - name: URL
         value: "$(params.iac-git-url)"
-      - name: revision
+      - name: REVISION
         value: "$(params.iac-git-revision)"
-      - name: subdirectory
+      - name: SUBDIRECTORY
         value: ""
-      - name: deleteExisting
+      - name: DELETE_EXISTING
         value: "true"
     runAfter:
     - push-image
@@ -173,8 +197,14 @@ spec:
         value: (.image.tag="v$(tasks.image-util.results.next-prerelease)"),(.image.repository="$(params.IMAGE)")
   - name: update-iac
     taskRef:
-      name: git-cli
-      kind: ClusterTask
+      resolver: cluster
+      params:
+      - name: kind
+        value: task
+      - name: name
+        value: git-cli
+      - name: namespace
+        value: openshift-pipelines
     workspaces:
     - name: source
       workspace: iac-workspace
@@ -185,6 +215,8 @@ spec:
         value: trevorbox
       - name: GIT_USER_EMAIL
         value: trevorjbox@gmail.com
+      - name: DELETE_EXISTING
+        value: 'false'
       - name: GIT_SCRIPT
         value: |
           git commit -am "update-iac v$(tasks.image-util.results.next-prerelease)"
